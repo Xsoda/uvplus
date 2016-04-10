@@ -10,6 +10,9 @@ class uvplus_loop {
   friend class uvplus_idle;
   friend class uvplus_async;
   friend class uvplus_poll;
+  friend class uvplus_signal;
+  friend class uvplus_pipe;
+  friend class uvplus_process;
 public:
   uvplus_loop();
   int init();

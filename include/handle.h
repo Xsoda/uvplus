@@ -16,6 +16,7 @@ public:
 protected:
   void *get_handle_ptr();
 private:
+
   static void close_cb(uv_handle_t *handle);
 
   uv_handle_t *ptr;

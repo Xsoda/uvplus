@@ -2,18 +2,21 @@ cmake_minimum_required(VERSION 2.8)
 project(uvplus)
 
 set(UVPLUS_SRC
+   src/handle.cpp
+   src/stream.cpp
    src/async.cpp
    src/check.cpp
-   src/handle.cpp
    src/idle.cpp
    src/loop.cpp
    src/poll.cpp
    src/prepare.cpp
-   src/stream.cpp
    src/tcp.cpp
    src/timer.cpp
-   src/udp.cpp)
+   src/udp.cpp
+   src/pipe.cpp
+   src/process.cpp)
 
+include_directories(../libuv/include)
 include_directories(include)
 add_library(uvplus STATIC ${UVPLUS_SRC})
 

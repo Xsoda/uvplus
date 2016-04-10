@@ -17,4 +17,5 @@ private:
 
   static void timer_cb(uv_timer_t *timer);
 };
+
 #endif  /* !__UVPLUS__TIMER_H__ */

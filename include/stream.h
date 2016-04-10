@@ -17,6 +17,7 @@ public:
   int is_readable();
   int is_writeable();
 private:
+
   uv_stream_t *ptr;
 
   std::function<void(int status)> connection_callback;

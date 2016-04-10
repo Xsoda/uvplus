@@ -15,4 +15,5 @@ private:
 
   static void poll_cb(uv_poll_t *handle, int status, int events);
 };
+
 #endif  /* !__UVPLUS__POLL_H__ */

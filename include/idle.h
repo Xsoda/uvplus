@@ -14,4 +14,5 @@ private:
 
   static void idle_cb(uv_idle_t *handle);
 };
+
 #endif  /* !__UVPLUS__IDLE_H__ */
