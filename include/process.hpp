@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__PROCESS_H__
-#define __UVPLUS__PROCESS_H__
+#ifndef __UVPLUS__PROCESS_HPP__
+#define __UVPLUS__PROCESS_HPP__
 
 class uvplus_process : public uvplus_handle {
 public:
@@ -26,4 +26,4 @@ private:
   static void exit_cb(uv_process_t *proc, int64_t exit_status, int term_signal);
 };
 
-#endif  /* !__UVPLUS__PROCESS_H__ */
+#endif  // !__UVPLUS__PROCESS_HPP__

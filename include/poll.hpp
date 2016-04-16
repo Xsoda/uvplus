@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__POLL_H__
-#define __UVPLUS__POLL_H__
+#ifndef __UVPLUS__POLL_HPP__
+#define __UVPLUS__POLL_HPP__
 
 class uvplus_poll : public uvplus_handle {
 public:
@@ -16,4 +16,4 @@ private:
   static void poll_cb(uv_poll_t *handle, int status, int events);
 };
 
-#endif  /* !__UVPLUS__POLL_H__ */
+#endif  // !__UVPLUS__POLL_HPP__

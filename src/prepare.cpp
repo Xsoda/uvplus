@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_prepare::uvplus_prepare() {
   ptr = static_cast<uv_prepare_t *>(get_handle_ptr());

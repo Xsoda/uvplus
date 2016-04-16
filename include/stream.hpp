@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__STREAM_H__
-#define __UVPLUS__STREAM_H__
+#ifndef __UVPLUS__STREAM_HPP__
+#define __UVPLUS__STREAM_HPP__
 
 class uvplus_stream : public uvplus_handle {
 public:
@@ -31,4 +31,4 @@ private:
   static void write_cb(uv_write_t *req, int status);
 };
 
-#endif  /* !__UVPLUS__STREAM_H__ */
+#endif  // !__UVPLUS__STREAM_HPP__

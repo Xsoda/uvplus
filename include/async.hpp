@@ -1,12 +1,12 @@
-#ifndef __UVPLUS__ASYNC_H__
-#define __UVPLUS__ASYNC_H__
+#ifndef __UVPLUS__ASYNC_HPP__
+#define __UVPLUS__ASYNC_HPP__
 
 class uvplus_async : public uvplus_handle {
-public:
+ public:
   uvplus_async();
   int init(uvplus_loop *loop, std::function<void()> async_callback);
   int send();
-private:
+ private:
   uv_async_t *ptr;
 
   std::function<void()> async_callback;
@@ -14,4 +14,5 @@ private:
   static void async_cb(uv_async_t *handle);
   
 };
-#endif  /* !__UVPLUS__ASYNC_H__ */
+
+#endif  // !__UVPLUS__ASYNC_HPP__

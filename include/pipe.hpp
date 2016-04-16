@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__PIPE_H__
-#define __UVPLUS__PIPE_H__
+#ifndef __UVPLUS__PIPE_HPP__
+#define __UVPLUS__PIPE_HPP__
 
 class uvplus_pipe : public uvplus_stream {
   friend class uvplus_process;
@@ -19,4 +19,4 @@ private:
   static void connect_cb(uv_connect_t *req, int status);
 };
 
-#endif  /* !__UVPLUS__PIPE_H__ */
+#endif  // !__UVPLUS__PIPE_HPP__

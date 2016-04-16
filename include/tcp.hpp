@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__TCP_H__
-#define __UVPLUS__TCP_H__
+#ifndef __UVPLUS__TCP_HPP__
+#define __UVPLUS__TCP_HPP__
 
 class uvplus_tcp : public uvplus_stream {
 public:
@@ -21,4 +21,4 @@ private:
   std::function<void(int status)> connect_callback;
 };
 
-#endif  /* !__UVPLUS__TCP_H__ */
+#endif  // !__UVPLUS__TCP_HPP__

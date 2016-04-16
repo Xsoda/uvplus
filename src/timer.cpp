@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_timer::uvplus_timer() {
   ptr = static_cast<uv_timer_t *>(get_handle_ptr());

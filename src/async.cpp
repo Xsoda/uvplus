@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_async::uvplus_async() {
   ptr = static_cast<uv_async_t *>(get_handle_ptr());

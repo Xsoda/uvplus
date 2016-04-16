@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_stream::uvplus_stream() {
   ptr = static_cast<uv_stream_t *>(get_handle_ptr());

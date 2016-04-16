@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_tcp::uvplus_tcp() {
   ptr = static_cast<uv_tcp_t *>(get_handle_ptr());

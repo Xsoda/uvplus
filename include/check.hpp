@@ -1,13 +1,13 @@
-#ifndef __UVPLUS__CHECK_H__
-#define __UVPLUS__CHECK_H__
+#ifndef __UVPLUS__CHECK_HPP__
+#define __UVPLUS__CHECK_HPP__
 
 class uvplus_check : public uvplus_handle {
-public:
+ public:
   uvplus_check();
   int init(uvplus_loop *loop);
   int start(std::function<void()> check_callback);
   int stop();
-private:
+ private:
   uv_check_t *ptr;
 
   std::function<void()> check_callback;
@@ -15,4 +15,4 @@ private:
   static void check_cb(uv_check_t *handle);
 };
 
-#endif  /* !__UVPLUS__CHECK_H__ */
+#endif  // !__UVPLUS__CHECK_HPP__

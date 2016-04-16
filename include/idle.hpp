@@ -1,13 +1,13 @@
-#ifndef __UVPLUS__IDLE_H__
-#define __UVPLUS__IDLE_H__
+#ifndef __UVPLUS__IDLE_HPP__
+#define __UVPLUS__IDLE_HPP__
 
 class uvplus_idle : public uvplus_handle {
-public:
+ public:
   uvplus_idle();
   int init(uvplus_loop *loop);
   int start(std::function<void()> idle_callback);
   int stop();
-private:
+ private:
   uv_idle_t *ptr;
 
   std::function<void()> idle_callback;
@@ -15,4 +15,4 @@ private:
   static void idle_cb(uv_idle_t *handle);
 };
 
-#endif  /* !__UVPLUS__IDLE_H__ */
+#endif  // !__UVPLUS__IDLE_H__

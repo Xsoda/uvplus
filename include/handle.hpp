@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__HANDLE_H__
-#define __UVPLUS__HANDLE_H__
+#ifndef __UVPLUS__HANDLE_HPP__
+#define __UVPLUS__HANDLE_HPP__
 
 class uvplus_handle {
 public:
@@ -23,4 +23,4 @@ private:
   uv_any_handle context;
   std::function<void()> close_callback;
 };
-#endif  /* !__UVPLUS__HANDLE_H__ */
+#endif  // !__UVPLUS__HANDLE_HPP__

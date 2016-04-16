@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_loop::uvplus_loop() {
   ptr = &loop;

@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__TIMER_H__
-#define __UVPLUS__TIMER_H__
+#ifndef __UVPLUS__TIMER_HPP__
+#define __UVPLUS__TIMER_HPP__
 
 class uvplus_timer : public uvplus_handle {
 public:
@@ -18,4 +18,4 @@ private:
   static void timer_cb(uv_timer_t *timer);
 };
 
-#endif  /* !__UVPLUS__TIMER_H__ */
+#endif  // !__UVPLUS__TIMER_HPP__

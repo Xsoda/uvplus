@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_idle::uvplus_idle() {
   ptr = static_cast<uv_idle_t *>(get_handle_ptr());

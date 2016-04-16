@@ -1,4 +1,4 @@
-#include "uvplus.h"
+#include "uvplus.hpp"
 
 uvplus_check::uvplus_check() {
   ptr = static_cast<uv_check_t *>(get_handle_ptr());

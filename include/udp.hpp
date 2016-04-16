@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__UDP_H__
-#define __UVPLUS__UDP_H__
+#ifndef __UVPLUS__UDP_HPP__
+#define __UVPLUS__UDP_HPP__
 
 class uvplus_udp : public uvplus_handle {
 public:
@@ -30,4 +30,4 @@ private:
   static void recv_cb(uv_udp_t *udp, ssize_t nread, const uv_buf_t *buf, const struct sockaddr *addr, unsigned flags);
 };
 
-#endif  /* !__UVPLUS__UDP_H__ */
+#endif  // !__UVPLUS__UDP_HPP__

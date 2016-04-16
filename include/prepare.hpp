@@ -1,5 +1,5 @@
-#ifndef __UVPLUS__PREPARE_H__
-#define __UVPLUS__PREPARE_H__
+#ifndef __UVPLUS__PREPARE_HPP__
+#define __UVPLUS__PREPARE_HPP__
 
 class uvplus_prepare : public uvplus_handle {
 public:
@@ -15,4 +15,4 @@ private:
   static void prepare_cb(uv_prepare_t *handle);
 };
 
-#endif  /* !__UVPLUS__PREPARE_H__ */
+#endif  // !__UVPLUS__PREPARE_HPP__

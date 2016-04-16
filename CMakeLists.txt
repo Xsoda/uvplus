@@ -14,7 +14,9 @@ set(UVPLUS_SRC
    src/timer.cpp
    src/udp.cpp
    src/pipe.cpp
-   src/process.cpp)
+   src/process.cpp
+   src/signal.cpp
+   src/tty.cpp)
 
 include_directories(../libuv/include)
 include_directories(include)
