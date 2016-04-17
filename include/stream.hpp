@@ -2,8 +2,10 @@
 #define __UVPLUS__STREAM_HPP__
 
 class uvplus_stream : public uvplus_handle {
-public:
+ protected:
   uvplus_stream();
+
+ public:
   int shutdown(std::function<void(int status)> shutdown_callback);
   int listen(int backlog, std::function<void(int status)> connection_callback);
   int accept(uvplus_stream *client);
@@ -16,10 +18,8 @@ public:
   int set_blocking(int blocking);
   int is_readable();
   int is_writeable();
-private:
 
-  uv_stream_t *ptr;
-
+ private:
   std::function<void(int status)> connection_callback;
   std::function<void(size_t suggested_size, uv_buf_t *buf)> alloc_callback;
   std::function<void(ssize_t nread, const uv_buf_t *buf)> read_callback;

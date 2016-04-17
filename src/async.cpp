@@ -1,16 +1,17 @@
 #include "uvplus.hpp"
 
 uvplus_async::uvplus_async() {
-  ptr = static_cast<uv_async_t *>(get_handle_ptr());
 }
 
 int uvplus_async::init(uvplus_loop *loop, std::function<void()> async_callback) {
+  auto async = (uv_async_t *)context_ptr();
   this->async_callback = async_callback;
-  return uv_async_init(loop->ptr, ptr, async_cb);
+  return uv_async_init(loop->context_ptr(), async, async_cb);
 }
 
 int uvplus_async::send() {
-  return uv_async_send(ptr);
+  auto async = (uv_async_t *)context_ptr();
+  return uv_async_send(async);
 }
 
 void uvplus_async::async_cb(uv_async_t *handle) {

@@ -1,32 +1,37 @@
 #include "uvplus.hpp"
 
 uvplus_timer::uvplus_timer() {
-  ptr = static_cast<uv_timer_t *>(get_handle_ptr());
 }
 
 int uvplus_timer::init(uvplus_loop *loop) {
-  return uv_timer_init(loop->ptr, ptr);
+  auto timer = (uv_timer_t *)context_ptr();
+  return uv_timer_init(loop->context_ptr(), timer);
 }
 
 int uvplus_timer::start(uint64_t timeout, uint64_t repeat, std::function<void()> timer_callback) {
+  auto timer = (uv_timer_t *)context_ptr();
   this->timer_callback = timer_callback;
-  return uv_timer_start(ptr, timer_cb, timeout, repeat);
+  return uv_timer_start(timer, timer_cb, timeout, repeat);
 }
 
 int uvplus_timer::stop() {
-  return uv_timer_stop(ptr);
+  auto timer = (uv_timer_t *)context_ptr();
+  return uv_timer_stop(timer);
 }
 
 int uvplus_timer::again() {
-  return uv_timer_again(ptr);
+  auto timer = (uv_timer_t *)context_ptr();
+  return uv_timer_again(timer);
 }
 
 void uvplus_timer::set_repeat(uint64_t repeat) {
-  uv_timer_set_repeat(ptr, repeat);
+  auto timer = (uv_timer_t *)context_ptr();
+  uv_timer_set_repeat(timer, repeat);
 }
 
 uint64_t uvplus_timer::get_repeat() {
-  return uv_timer_get_repeat(ptr);
+  auto timer = (uv_timer_t *)context_ptr();
+  return uv_timer_get_repeat(timer);
 }
 
 void uvplus_timer::timer_cb(uv_timer_t *timer) {

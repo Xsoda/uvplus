@@ -21,7 +21,6 @@ public:
                  std::function<void(ssize_t nread, const uv_buf_t *buf, const struct sockaddr *addr, unsigned flags)> recv_callback);
   int recv_stop();
 private:
-  uv_udp_t *ptr;
   std::function<void(size_t suggested_size, uv_buf_t *buf)> alloc_callback;
   std::function<void(ssize_t nread, const uv_buf_t *buf, const struct sockaddr *addr, unsigned flags)> recv_callback;
 

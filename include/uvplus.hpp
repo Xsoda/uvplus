@@ -23,5 +23,7 @@
 #include "process.hpp"
 #include "signal.hpp"
 #include "tty.hpp"
+#include "fs_event.hpp"
+#include "fs_poll.hpp"
 
 #endif  // !__UVPLUS_HPP__

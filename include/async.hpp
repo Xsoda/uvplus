@@ -7,8 +7,6 @@ class uvplus_async : public uvplus_handle {
   int init(uvplus_loop *loop, std::function<void()> async_callback);
   int send();
  private:
-  uv_async_t *ptr;
-
   std::function<void()> async_callback;
 
   static void async_cb(uv_async_t *handle);

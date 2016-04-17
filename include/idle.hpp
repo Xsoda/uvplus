@@ -8,8 +8,6 @@ class uvplus_idle : public uvplus_handle {
   int start(std::function<void()> idle_callback);
   int stop();
  private:
-  uv_idle_t *ptr;
-
   std::function<void()> idle_callback;
 
   static void idle_cb(uv_idle_t *handle);

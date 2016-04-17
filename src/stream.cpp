@@ -1,64 +1,74 @@
 #include "uvplus.hpp"
 
 uvplus_stream::uvplus_stream() {
-  ptr = static_cast<uv_stream_t *>(get_handle_ptr());
 }
 
 int uvplus_stream::shutdown(std::function<void(int status)> shutdown_callback) {
   auto req = new uv_shutdown_t;
   auto shutdown_callback_ptr = new std::function<void(int status)>(shutdown_callback);
+  auto stream = (uv_stream_t *)context_ptr();
   req->data = static_cast<void *>(shutdown_callback_ptr);
-  return uv_shutdown(req, ptr, shutdown_cb);
+  return uv_shutdown(req, stream, shutdown_cb);
 }
 
 int uvplus_stream::listen(int backlog, std::function<void(int status)> connection_callback) {
+  auto stream = (uv_stream_t *)context_ptr();
   this->connection_callback = connection_callback;
-  return uv_listen(ptr, backlog, connection_cb);
+  return uv_listen(stream, backlog, connection_cb);
 }
 
 int uvplus_stream::accept(uvplus_stream *client) {
-  return uv_accept(ptr, client->ptr);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_accept(stream, (uv_stream_t *)client->context_ptr());
 }
 
 int uvplus_stream::read_start(std::function<void(size_t suggested_size, uv_buf_t *buf)> alloc_callback,
                               std::function<void(ssize_t nread, const uv_buf_t *buf)> read_callback) {
+  auto stream = (uv_stream_t *)context_ptr();
   this->alloc_callback = alloc_callback;
   this->read_callback = read_callback;
-  return uv_read_start(ptr, alloc_cb, read_cb);
+  return uv_read_start(stream, alloc_cb, read_cb);
 }
 
 int uvplus_stream::read_stop() {
-  return uv_read_stop(ptr);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_read_stop(stream);
 }
 
 int uvplus_stream::write(const uv_buf_t bufs[], unsigned int nbufs, std::function<void(int status)> write_callback) {
   uv_write_t *req = new uv_write_t;
   auto write_callback_ptr = new std::function<void(int status)>(write_callback);
+  auto stream = (uv_stream_t *)context_ptr();
   req->data = static_cast<void *>(write_callback_ptr);
-  return uv_write(req, ptr, bufs, nbufs, write_cb);
+  return uv_write(req, stream, bufs, nbufs, write_cb);
 }
 
 int uvplus_stream::write2(const uv_buf_t bufs[], unsigned int nbufs, uvplus_stream *send_handle, std::function<void(int status)> write_callback) {
   uv_write_t *req = new uv_write_t;
   auto write_callback_ptr = new std::function<void(int status)>(write_callback);
+  auto stream = (uv_stream_t *)context_ptr();
   req->data = static_cast<void *>(write_callback_ptr);
-  return uv_write2(req, ptr, bufs, nbufs, send_handle->ptr, write_cb);
+  return uv_write2(req, stream, bufs, nbufs, (uv_stream_t *)send_handle->context_ptr(), write_cb);
 }
 
 int uvplus_stream::try_write(const uv_buf_t bufs[], unsigned int nbufs) {
-  return uv_try_write(ptr, bufs, nbufs);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_try_write(stream, bufs, nbufs);
 }
 
 int uvplus_stream::set_blocking(int blocking) {
-  return uv_stream_set_blocking(ptr, blocking);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_stream_set_blocking(stream, blocking);
 }
       
 int uvplus_stream::is_readable() {
-  return uv_is_readable(ptr);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_is_readable(stream);
 }
 
 int uvplus_stream::is_writeable() {
-  return uv_is_writable(ptr);
+  auto stream = (uv_stream_t *)context_ptr();
+  return uv_is_writable(stream);
 }
 
 void uvplus_stream::shutdown_cb(uv_shutdown_t *req, int status) {

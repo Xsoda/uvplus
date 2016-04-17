@@ -11,8 +11,6 @@ public:
   void set_repeat(uint64_t repeat);
   uint64_t get_repeat();
 private:
-  uv_timer_t *ptr;
-
   std::function<void()> timer_callback;
 
   static void timer_cb(uv_timer_t *timer);

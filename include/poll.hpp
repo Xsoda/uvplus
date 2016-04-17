@@ -9,8 +9,6 @@ public:
   int start(int events, std::function<void(int status, int events)> poll_callback);
   int stop();
 private:
-  uv_poll_t *ptr;
-
   std::function<void(int status, int events)> poll_callback;
 
   static void poll_cb(uv_poll_t *handle, int status, int events);

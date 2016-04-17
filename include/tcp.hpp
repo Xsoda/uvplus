@@ -15,8 +15,6 @@ public:
   int getpeername(struct sockaddr *name, int *namelen);
   int connect(const struct sockaddr *addr, std::function<void(int status)> connect_callback);
 private:
-  uv_tcp_t *ptr;
-
   static void connect_cb(uv_connect_t *req, int status);
   std::function<void(int status)> connect_callback;
 };

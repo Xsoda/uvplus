@@ -2,13 +2,12 @@
 #include <cstring>
 
 uvplus_process::uvplus_process() {
-  ptr = static_cast<uv_process_t *>(get_handle_ptr());
   options.exit_cb = exit_cb;
   options.stdio_count = 3;
   options.stdio = stdio_container;
   for (int i = 0; i < 3; i++) {
     stdio_container[i].flags = UV_IGNORE;
-    stdio_container[i].data.stream = (uv_stream_t *)stdio_stream[i].ptr;
+    stdio_container[i].data.stream = (uv_stream_t *)stdio_stream[i].context_ptr();
   }
 }
 
@@ -23,27 +22,18 @@ uvplus_process::~uvplus_process() {
   delete [] options.args;
 }
 
-void uvplus_process::enable_stdin_stream() {
+uvplus_stream &uvplus_process::enable_stdin_stream() {
   options.stdio[0].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
-}
-
-void uvplus_process::enable_stdout_stream() {
-  options.stdio[1].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
-}
-
-void uvplus_process::enable_stderr_stream() {
-  options.stdio[2].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
-}
-
-uvplus_stream &uvplus_process::get_stdin_stream() {
   return stdio_stream[0];
 }
 
-uvplus_stream &uvplus_process::get_stdout_stream() {
+uvplus_stream &uvplus_process::enable_stdout_stream() {
+  options.stdio[1].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
   return stdio_stream[1];
 }
 
-uvplus_stream &uvplus_process::get_stderr_stream() {
+uvplus_stream &uvplus_process::enable_stderr_stream() {
+  options.stdio[2].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
   return stdio_stream[2];
 }
 
@@ -57,11 +47,13 @@ void uvplus_process::set_exit_callback(std::function<void(int64_t exit_status, i
 }
 
 int uvplus_process::kill(int signum) {
-  return uv_process_kill(ptr, signum);
+  auto proc = (uv_process_t *)context_ptr();
+  return uv_process_kill(proc, signum);
 }
 
 int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> &args) {
   int i = 0;
+  auto proc = (uv_process_t *)context_ptr();
   options.args = new char*[args.size() + 1];
   for (auto arg : args) {
     options.args[i] = new char[arg.length() + 1];
@@ -77,7 +69,7 @@ int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> 
     }
   }
 
-  return uv_spawn(loop->ptr, ptr, &options);
+  return uv_spawn(loop->context_ptr(), proc, &options);
 }
 
 void uvplus_process::exit_cb(uv_process_t *proc, int64_t exit_status, int term_signal) {

@@ -8,8 +8,6 @@ public:
   int start(int signum, std::function<void(int signum)> signal_callback);
   int stop();
 private:
-  uv_signal_t *ptr;
-
   std::function<void(int signum)> signal_callback;
 
   static void signal_cb(uv_signal_t *signal, int signum);

@@ -14,8 +14,6 @@ public:
   void pending_instances(int count);
   int pending_count();
 private:
-  uv_pipe_t *ptr;
-
   static void connect_cb(uv_connect_t *req, int status);
 };
 

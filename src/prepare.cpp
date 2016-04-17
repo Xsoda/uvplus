@@ -1,20 +1,22 @@
 #include "uvplus.hpp"
 
 uvplus_prepare::uvplus_prepare() {
-  ptr = static_cast<uv_prepare_t *>(get_handle_ptr());
 }
 
 int uvplus_prepare::init(uvplus_loop *loop) {
-  return uv_prepare_init(loop->ptr, ptr);
+  auto handle = (uv_prepare_t *)context_ptr();
+  return uv_prepare_init(loop->context_ptr(), handle);
 }
 
 int uvplus_prepare::start(std::function<void()> prepare_callback) {
+  auto handle = (uv_prepare_t *)context_ptr();
   this->prepare_callback = prepare_callback;
-  return uv_prepare_start(ptr, prepare_cb);
+  return uv_prepare_start(handle, prepare_cb);
 }
 
 int uvplus_prepare::stop() {
-  return uv_prepare_stop(ptr);
+  auto handle = (uv_prepare_t *)context_ptr();
+  return uv_prepare_stop(handle);
 }
 
 void uvplus_prepare::prepare_cb(uv_prepare_t *handle) {

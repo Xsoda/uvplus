@@ -8,8 +8,6 @@ class uvplus_check : public uvplus_handle {
   int start(std::function<void()> check_callback);
   int stop();
  private:
-  uv_check_t *ptr;
-
   std::function<void()> check_callback;
 
   static void check_cb(uv_check_t *handle);

@@ -1,15 +1,16 @@
 #include "uvplus.hpp"
 
 uvplus_tty::uvplus_tty() {
-  ptr = static_cast<uv_tty_t *>(get_handle_ptr());
 }
 
 int uvplus_tty::init(uvplus_loop *loop, uv_file fd, int readable) {
-  return uv_tty_init(loop->ptr, ptr, fd, readable);
+  auto tty = (uv_tty_t *)context_ptr();
+  return uv_tty_init(loop->context_ptr(), tty, fd, readable);
 }
 
 int uvplus_tty::set_mode(uv_tty_mode_t mode) {
-  return uv_tty_set_mode(ptr, mode);
+  auto tty = (uv_tty_t *)context_ptr();
+  return uv_tty_set_mode(tty, mode);
 }
 
 int uvplus_tty::reset_mode(void) {
@@ -17,5 +18,6 @@ int uvplus_tty::reset_mode(void) {
 }
 
 int uvplus_tty::get_winsize(int *width, int *height) {
-  return uv_tty_get_winsize(ptr, width, height);
+  auto tty = (uv_tty_t *)context_ptr();
+  return uv_tty_get_winsize(tty, width, height);
 }

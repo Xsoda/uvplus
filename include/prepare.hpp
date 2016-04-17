@@ -8,8 +8,6 @@ public:
   int start(std::function<void()> prepare_callback);
   int stop();
 private:
-  uv_prepare_t *ptr;
-
   std::function<void()> prepare_callback;
 
   static void prepare_cb(uv_prepare_t *handle);

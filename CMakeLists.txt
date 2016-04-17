@@ -16,7 +16,9 @@ set(UVPLUS_SRC
    src/pipe.cpp
    src/process.cpp
    src/signal.cpp
-   src/tty.cpp)
+   src/tty.cpp
+   src/fs_event.cpp
+   src/fs_poll.cpp)
 
 include_directories(../libuv/include)
 include_directories(include)
