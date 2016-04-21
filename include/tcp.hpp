@@ -10,9 +10,13 @@ public:
   int nodelay(int enable);
   int keepalive(int enable, unsigned int delay);
   int simultaneous_accepts(int enable);
+  int bind4(const char *ipv4, int port);
+  int bind6(const char *ipv6, int port);
   int bind(const sockaddr *addr, unsigned int flags);
   int getsockname(struct sockaddr *name, int *namelen);
   int getpeername(struct sockaddr *name, int *namelen);
+  int connect4(const char *ipv4, int prot, std::function<void(int status)> connect_callback);
+  int connect6(const char *ipv6, int port, std::function<void(int status)> connect_callback);
   int connect(const struct sockaddr *addr, std::function<void(int status)> connect_callback);
 private:
   static void connect_cb(uv_connect_t *req, int status);

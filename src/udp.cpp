@@ -65,6 +65,7 @@ int uvplus_udp::send(const uv_buf_t bufs[], unsigned int nbufs, const struct soc
   req->data = static_cast<void *>(send_callback_ptr);
   return uv_udp_send(req, udp, bufs, nbufs, addr, send_cb);
 }
+
 int uvplus_udp::try_send(const uv_buf_t bufs[], unsigned int nbufs, const struct sockaddr *addr) {
   auto udp = (uv_udp_t *)context_ptr();
   return uv_udp_try_send(udp, bufs, nbufs, addr);
