@@ -11,10 +11,10 @@ int uvplus_stream::shutdown(std::function<void(int status)> shutdown_callback) {
   return uv_shutdown(req, stream, shutdown_cb);
 }
 
-int uvplus_stream::listen(int backlog, std::function<void(int status)> connection_callback) {
+int uvplus_stream::listen(std::function<void(int status)> connection_callback) {
   auto stream = (uv_stream_t *)context_ptr();
   this->connection_callback = connection_callback;
-  return uv_listen(stream, backlog, connection_cb);
+  return uv_listen(stream, SOMAXCONN, connection_cb);
 }
 
 int uvplus_stream::accept(uvplus_stream *client) {
@@ -35,6 +35,11 @@ int uvplus_stream::read_stop() {
   return uv_read_stop(stream);
 }
 
+int uvplus_stream::write(const char *buf, size_t length, std::function<void(int status)> write_callback) {
+   uv_buf_t wbuf = uv_buf_init((char *)buf, length);
+   return write(&wbuf, 1, write_callback);
+}
+
 int uvplus_stream::write(const uv_buf_t bufs[], unsigned int nbufs, std::function<void(int status)> write_callback) {
   uv_write_t *req = new uv_write_t;
   auto write_callback_ptr = new std::function<void(int status)>(write_callback);
@@ -49,6 +54,11 @@ int uvplus_stream::write2(const uv_buf_t bufs[], unsigned int nbufs, uvplus_stre
   auto stream = (uv_stream_t *)context_ptr();
   req->data = static_cast<void *>(write_callback_ptr);
   return uv_write2(req, stream, bufs, nbufs, (uv_stream_t *)send_handle->context_ptr(), write_cb);
+}
+
+int uvplus_stream::try_write(const char *buf, size_t length) {
+   uv_buf_t wbuf = uv_buf_init((char *)buf, length);
+   return try_write(&wbuf, 1);
 }
 
 int uvplus_stream::try_write(const uv_buf_t bufs[], unsigned int nbufs) {

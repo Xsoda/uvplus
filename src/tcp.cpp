@@ -34,6 +34,22 @@ int uvplus_tcp::simultaneous_accepts(int enable) {
   return uv_tcp_simultaneous_accepts(tcp, enable);
 }
 
+int uvplus_tcp::bind4(const char *ipv4, int port) {
+   struct sockaddr_in addr;
+   int r = uv_ip4_addr(ipv4, port, &addr);
+   if (r < 0)
+      return r;
+   return bind((const sockaddr *)&addr, 0);
+}
+
+int uvplus_tcp::bind6(const char *ipv6, int port) {
+   struct sockaddr_in6 addr;
+   int r = uv_ip6_addr(ipv6, port, &addr);
+   if (r < 0)
+      return r;
+   return bind((const sockaddr *)&addr, 0);
+}
+
 int uvplus_tcp::bind(const sockaddr *addr, unsigned int flags) {
   auto tcp = (uv_tcp_t *)context_ptr();
   return uv_tcp_bind(tcp, addr, flags);
@@ -47,6 +63,22 @@ int uvplus_tcp::getsockname(struct sockaddr *name, int *namelen) {
 int uvplus_tcp::getpeername(struct sockaddr *name, int *namelen) {
   auto tcp = (uv_tcp_t *)context_ptr();
   return uv_tcp_getpeername(tcp, name, namelen);
+}
+
+int uvplus_tcp::connect4(const char *ipv4, int port, std::function<void(int status)> connect_callback) {
+   struct sockaddr_in addr;
+   int r = uv_ip4_addr(ipv4, port, &addr);
+   if (r < 0)
+      return r;
+   return connect((const struct sockaddr *)&addr, connect_callback);
+}
+
+int uvplus_tcp::connect6(const char *ipv6, int port, std::function<void(int status)> connect_callback) {
+   struct sockaddr_in6 addr;
+   int r = uv_ip6_addr(ipv6, port, &addr);
+   if (r < 0)
+      return r;
+   return connect((const struct sockaddr *)&addr, connect_callback);
 }
 
 int uvplus_tcp::connect(const struct sockaddr *addr, std::function<void(int status)> connect_callback) {
