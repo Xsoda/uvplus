@@ -4,6 +4,7 @@ uvplus_signal::uvplus_signal() {
 }
 
 int uvplus_signal::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto signal = (uv_signal_t *)context_ptr();
   return uv_signal_init(loop->context_ptr(), signal);
 }

@@ -4,6 +4,7 @@ uvplus_prepare::uvplus_prepare() {
 }
 
 int uvplus_prepare::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto handle = (uv_prepare_t *)context_ptr();
   return uv_prepare_init(loop->context_ptr(), handle);
 }

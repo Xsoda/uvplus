@@ -4,6 +4,7 @@ uvplus_pipe::uvplus_pipe() {
 }
 
 int uvplus_pipe::init(uvplus_loop *loop, int ipc) {
+  this->uvplus_handle::init();
   auto pipe = (uv_pipe_t *)context_ptr();
   return uv_pipe_init(loop->context_ptr(), pipe, ipc);
 }

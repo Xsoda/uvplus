@@ -4,6 +4,7 @@ uvplus_idle::uvplus_idle() {
 }
 
 int uvplus_idle::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto handle = (uv_idle_t *)context_ptr();
   return uv_idle_init(loop->context_ptr(), handle);
 }

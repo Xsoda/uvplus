@@ -6,9 +6,9 @@ public:
   uvplus_process();
   ~uvplus_process();
   void set_exec_file(std::string &file);
-  uvplus_stream &enable_stdin_stream();
-  uvplus_stream &enable_stdout_stream();
-  uvplus_stream &enable_stderr_stream();
+  const uvplus_stream &enable_stdin_stream();
+  const uvplus_stream &enable_stdout_stream();
+  const uvplus_stream &enable_stderr_stream();
   void set_cwd(std::string &cwd);
   void set_exit_callback(std::function<void(int64_t exit_status, int term_signal)> exit_callback);
   int kill(int signum);

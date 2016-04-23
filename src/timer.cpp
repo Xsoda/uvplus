@@ -4,6 +4,7 @@ uvplus_timer::uvplus_timer() {
 }
 
 int uvplus_timer::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto timer = (uv_timer_t *)context_ptr();
   return uv_timer_init(loop->context_ptr(), timer);
 }

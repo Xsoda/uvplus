@@ -4,6 +4,7 @@ uvplus_check::uvplus_check() {
 }
 
 int uvplus_check::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto check = (uv_check_t *)context_ptr();
   return uv_check_init(loop->context_ptr(), check);
 }

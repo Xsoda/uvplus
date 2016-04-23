@@ -4,6 +4,7 @@ uvplus_udp::uvplus_udp() {
 }
 
 int uvplus_udp::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto udp = (uv_udp_t *)context_ptr();
   return uv_udp_init(loop->context_ptr(), udp);
 }

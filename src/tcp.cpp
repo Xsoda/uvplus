@@ -4,6 +4,7 @@ uvplus_tcp::uvplus_tcp() {
 }
 
 int uvplus_tcp::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto tcp = (uv_tcp_t *)context_ptr();
   return uv_tcp_init(loop->context_ptr(), tcp);
 }

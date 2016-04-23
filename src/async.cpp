@@ -4,6 +4,7 @@ uvplus_async::uvplus_async() {
 }
 
 int uvplus_async::init(uvplus_loop *loop, std::function<void()> async_callback) {
+  this->uvplus_handle::init();
   auto async = (uv_async_t *)context_ptr();
   this->async_callback = async_callback;
   return uv_async_init(loop->context_ptr(), async, async_cb);

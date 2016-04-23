@@ -4,6 +4,7 @@ uvplus_fs_event::uvplus_fs_event() {
 }
 
 int uvplus_fs_event::init(uvplus_loop *loop) {
+  this->uvplus_handle::init();
   auto event = (uv_fs_event_t *)context_ptr();
   return uv_fs_event_init(loop->context_ptr(), event);
 }

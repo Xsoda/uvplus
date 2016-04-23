@@ -4,6 +4,10 @@
 class uvplus_handle {
  protected:
   uvplus_handle();
+  uvplus_handle(uvplus_handle &&);
+  uvplus_handle &operator=(uvplus_handle &&);
+  ~uvplus_handle();
+  void init();
 
  public:
   int is_active();
@@ -18,8 +22,12 @@ class uvplus_handle {
   uv_handle_t *context_ptr();
 
  private:
+  uvplus_handle(const uvplus_handle &that) = delete;
+  uvplus_handle &operator=(const uvplus_handle &that) = delete;
+
+ private:
   static void close_cb(uv_handle_t *handle);
-  uv_any_handle context;
+  uv_any_handle *context;
   std::function<void()> close_callback;
 };
 #endif  // !__UVPLUS__HANDLE_HPP__

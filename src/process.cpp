@@ -7,32 +7,33 @@ uvplus_process::uvplus_process() {
   options.stdio = stdio_container;
   for (int i = 0; i < 3; i++) {
     stdio_container[i].flags = UV_IGNORE;
-    stdio_container[i].data.stream = (uv_stream_t *)stdio_stream[i].context_ptr();
   }
 }
 
 uvplus_process::~uvplus_process() {
   if (options.cwd)
     delete [] options.cwd;
-  char **args = options.args;
-  while (*args) {
-    delete [] *args;
-    args++;
+  if (options.args) {
+    char **args = options.args;
+    while (*args) {
+      delete [] *args;
+      args++;
+    }
+    delete [] options.args;
   }
-  delete [] options.args;
 }
 
-uvplus_stream &uvplus_process::enable_stdin_stream() {
+const uvplus_stream &uvplus_process::enable_stdin_stream() {
   options.stdio[0].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_WRITABLE_PIPE);
   return stdio_stream[0];
 }
 
-uvplus_stream &uvplus_process::enable_stdout_stream() {
+const uvplus_stream &uvplus_process::enable_stdout_stream() {
   options.stdio[1].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
   return stdio_stream[1];
 }
 
-uvplus_stream &uvplus_process::enable_stderr_stream() {
+const uvplus_stream &uvplus_process::enable_stderr_stream() {
   options.stdio[2].flags = static_cast<uv_stdio_flags>(UV_CREATE_PIPE | UV_READABLE_PIPE);
   return stdio_stream[2];
 }
@@ -48,11 +49,14 @@ void uvplus_process::set_exit_callback(std::function<void(int64_t exit_status, i
 
 int uvplus_process::kill(int signum) {
   auto proc = (uv_process_t *)context_ptr();
-  return uv_process_kill(proc, signum);
+  if (proc)
+    return uv_process_kill(proc, signum);
+  return 0;
 }
 
 int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> &args) {
   int i = 0;
+  this->uvplus_handle::init();
   auto proc = (uv_process_t *)context_ptr();
   options.args = new char*[args.size() + 1];
   for (auto arg : args) {
@@ -66,6 +70,7 @@ int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> 
   for (i = 0; i < 3; i++) {
     if (stdio_container[i].flags) {
       stdio_stream[i].init(loop, 0);
+      stdio_container[i].data.stream = (uv_stream_t *)stdio_stream[i].context_ptr();
     }
   }
 

@@ -4,6 +4,7 @@ uvplus_tty::uvplus_tty() {
 }
 
 int uvplus_tty::init(uvplus_loop *loop, uv_file fd, int readable) {
+  this->uvplus_handle::init();
   auto tty = (uv_tty_t *)context_ptr();
   return uv_tty_init(loop->context_ptr(), tty, fd, readable);
 }

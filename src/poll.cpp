@@ -4,6 +4,7 @@ uvplus_poll::uvplus_poll() {
 }
 
 int uvplus_poll::init(uvplus_loop *loop, int fd) {
+  this->uvplus_handle::init();
   auto handle = (uv_poll_t *)context_ptr();
   return uv_poll_init(loop->context_ptr(), handle, fd);
 }
