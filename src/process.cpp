@@ -43,7 +43,7 @@ void uvplus_process::set_cwd(std::string &cwd) {
   strcpy((char *)options.cwd, cwd.c_str());
 }
 
-void uvplus_process::set_exit_callback(std::function<void(int64_t exit_status, int term_signal)> exit_callback) {
+void uvplus_process::set_exit_callback(std::function<void(uvplus_process *self, int64_t exit_status, int term_signal)> exit_callback) {
   this->exit_callback = exit_callback;
 }
 
@@ -54,7 +54,7 @@ int uvplus_process::kill(int signum) {
   return 0;
 }
 
-int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> &args) {
+int uvplus_process::spawn(uvplus_loop &loop, std::initializer_list<std::string> &args) {
   int i = 0;
   this->uvplus_handle::init();
   auto proc = (uv_process_t *)context_ptr();
@@ -74,7 +74,7 @@ int uvplus_process::spawn(uvplus_loop *loop, std::initializer_list<std::string> 
     }
   }
 
-  return uv_spawn(loop->context_ptr(), proc, &options);
+  return uv_spawn(loop.context_ptr(), proc, &options);
 }
 
 void uvplus_process::exit_cb(uv_process_t *proc, int64_t exit_status, int term_signal) {
@@ -83,13 +83,13 @@ void uvplus_process::exit_cb(uv_process_t *proc, int64_t exit_status, int term_s
   for (int i = 0; i < 3; i++) {
     if (self->stdio_container[i].flags) {
       if (self->stdio_stream[i].is_active()) {
-        self->stdio_stream[i].shutdown([&] (int status) {
-            self->stdio_stream[i].close();
+        self->stdio_stream[i].shutdown([] (uvplus_stream *stream, int status) {
+            stream->close();
           });
       }
     }
   }
   if (self->exit_callback) {
-    self->exit_callback(exit_status, term_signal);
+    self->exit_callback(self, exit_status, term_signal);
   }
 }

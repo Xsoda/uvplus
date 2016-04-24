@@ -4,11 +4,11 @@
 class uvplus_prepare : public uvplus_handle {
 public:
   uvplus_prepare();
-  int init(uvplus_loop *loop);
-  int start(std::function<void()> prepare_callback);
+  int init(uvplus_loop &loop);
+  int start(std::function<void(uvplus_prepare *self)> prepare_callback);
   int stop();
 private:
-  std::function<void()> prepare_callback;
+  std::function<void(uvplus_prepare *self)> prepare_callback;
 
   static void prepare_cb(uv_prepare_t *handle);
 };

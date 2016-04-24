@@ -3,13 +3,13 @@
 uvplus_signal::uvplus_signal() {
 }
 
-int uvplus_signal::init(uvplus_loop *loop) {
+int uvplus_signal::init(uvplus_loop &loop) {
   this->uvplus_handle::init();
   auto signal = (uv_signal_t *)context_ptr();
-  return uv_signal_init(loop->context_ptr(), signal);
+  return uv_signal_init(loop.context_ptr(), signal);
 }
 
-int uvplus_signal::start(int signum, std::function<void(int signum)> signal_callback) {
+int uvplus_signal::start(int signum, std::function<void(uvplus_signal *self, int signum)> signal_callback) {
   auto signal = (uv_signal_t *)context_ptr();
   this->signal_callback = signal_callback;
   return uv_signal_start(signal, signal_cb, signum);
@@ -24,6 +24,6 @@ void uvplus_signal::signal_cb(uv_signal_t *signal, int signum) {
   auto handle = static_cast<uvplus_handle *>(signal->data);
   auto self = static_cast<uvplus_signal *>(handle);
   if (self->signal_callback) {
-    self->signal_callback(signum);
+    self->signal_callback(self, signum);
   }
 }

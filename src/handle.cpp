@@ -44,7 +44,7 @@ int uvplus_handle::is_closing() {
   return uv_is_closing(&context->handle);
 }
 
-void uvplus_handle::close(std::function<void()> close_callback) {
+void uvplus_handle::close(std::function<void(uvplus_handle *self)> close_callback) {
   this->close_callback = close_callback;
   uv_close(&context->handle, close_cb);
 }
@@ -76,6 +76,6 @@ int uvplus_handle::fileno(uv_os_fd_t *fd) {
 void uvplus_handle::close_cb(uv_handle_t *handle) {
   uvplus_handle *self = static_cast<uvplus_handle *>(handle->data);
   if (self->close_callback) {
-    self->close_callback();
+    self->close_callback(self);
   }
 }

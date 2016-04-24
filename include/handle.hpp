@@ -12,7 +12,7 @@ class uvplus_handle {
  public:
   int is_active();
   int is_closing();
-  void close(std::function<void()> close_callback=nullptr);
+  void close(std::function<void(uvplus_handle *self)> close_callback=nullptr);
   void ref();
   void unref();
   int has_ref();
@@ -28,6 +28,6 @@ class uvplus_handle {
  private:
   static void close_cb(uv_handle_t *handle);
   uv_any_handle *context;
-  std::function<void()> close_callback;
+  std::function<void(uvplus_handle *self)> close_callback;
 };
 #endif  // !__UVPLUS__HANDLE_HPP__

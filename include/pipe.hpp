@@ -5,10 +5,10 @@ class uvplus_pipe : public uvplus_stream {
   friend class uvplus_process;
 public:
   uvplus_pipe();
-  int init(uvplus_loop *loop, int ipc);
+  int init(uvplus_loop &loop, int ipc);
   int open(uv_file file);
   int bind(const char *name);
-  void connect(const char *name, std::function<void(int status)> connect_callback);
+  void connect(const char *name, std::function<void(uvplus_pipe *self, int status)> connect_callback);
   int getsockname(char *buffer, size_t *size);
   int getpeername(char *buffer, size_t *size);
   void pending_instances(int count);

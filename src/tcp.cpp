@@ -3,15 +3,15 @@
 uvplus_tcp::uvplus_tcp() {
 }
 
-int uvplus_tcp::init(uvplus_loop *loop) {
+int uvplus_tcp::init(uvplus_loop &loop) {
   this->uvplus_handle::init();
   auto tcp = (uv_tcp_t *)context_ptr();
-  return uv_tcp_init(loop->context_ptr(), tcp);
+  return uv_tcp_init(loop.context_ptr(), tcp);
 }
 
-int uvplus_tcp::init_ex(uvplus_loop *loop, int flags) {
+int uvplus_tcp::init_ex(uvplus_loop &loop, int flags) {
   auto tcp = (uv_tcp_t *)context_ptr();
-  return uv_tcp_init_ex(loop->context_ptr(), tcp, flags);
+  return uv_tcp_init_ex(loop.context_ptr(), tcp, flags);
 }
 
 int uvplus_tcp::open(uv_os_sock_t sock) {
@@ -65,7 +65,7 @@ int uvplus_tcp::getpeername(struct sockaddr *name, int *namelen) {
   return uv_tcp_getpeername(tcp, name, namelen);
 }
 
-int uvplus_tcp::connect4(const char *ipv4, int port, std::function<void(int status)> connect_callback) {
+int uvplus_tcp::connect4(const char *ipv4, int port, std::function<void(uvplus_tcp *self, int status)> connect_callback) {
    struct sockaddr_in addr;
    int r = uv_ip4_addr(ipv4, port, &addr);
    if (r < 0)
@@ -73,7 +73,7 @@ int uvplus_tcp::connect4(const char *ipv4, int port, std::function<void(int stat
    return connect((const struct sockaddr *)&addr, connect_callback);
 }
 
-int uvplus_tcp::connect6(const char *ipv6, int port, std::function<void(int status)> connect_callback) {
+int uvplus_tcp::connect6(const char *ipv6, int port, std::function<void(uvplus_tcp *self, int status)> connect_callback) {
    struct sockaddr_in6 addr;
    int r = uv_ip6_addr(ipv6, port, &addr);
    if (r < 0)
@@ -81,9 +81,9 @@ int uvplus_tcp::connect6(const char *ipv6, int port, std::function<void(int stat
    return connect((const struct sockaddr *)&addr, connect_callback);
 }
 
-int uvplus_tcp::connect(const struct sockaddr *addr, std::function<void(int status)> connect_callback) {
+int uvplus_tcp::connect(const struct sockaddr *addr, std::function<void(uvplus_tcp *self, int status)> connect_callback) {
   uv_connect_t *req = new uv_connect_t;
-  auto connect_callback_ptr = new std::function<void(int status)>(connect_callback);
+  auto connect_callback_ptr = new std::function<void(uvplus_tcp *self, int status)>(connect_callback);
   auto tcp = (uv_tcp_t *)context_ptr();
   req->data = static_cast<void *>(connect_callback_ptr);
   return uv_tcp_connect(req, tcp, addr, connect_cb);
@@ -91,11 +91,11 @@ int uvplus_tcp::connect(const struct sockaddr *addr, std::function<void(int stat
 
 void uvplus_tcp::connect_cb(uv_connect_t *req, int status) {
   uv_stream_t *stream = req->handle;
-  auto connect_callback = static_cast<std::function<void(int status)> *>(req->data);
+  auto connect_callback = static_cast<std::function<void(uvplus_tcp *self, int status)> *>(req->data);
   auto handle = static_cast<uvplus_handle *>(stream->data);
   auto self = static_cast<uvplus_tcp *>(handle);
   if (*connect_callback) {
-    (*connect_callback)(status);
+    (*connect_callback)(self, status);
   }
   delete connect_callback;
   delete req;

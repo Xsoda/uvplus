@@ -4,11 +4,11 @@
 class uvplus_idle : public uvplus_handle {
  public:
   uvplus_idle();
-  int init(uvplus_loop *loop);
-  int start(std::function<void()> idle_callback);
+  int init(uvplus_loop &loop);
+  int start(std::function<void(uvplus_idle *self)> idle_callback);
   int stop();
  private:
-  std::function<void()> idle_callback;
+  std::function<void(uvplus_idle *self)> idle_callback;
 
   static void idle_cb(uv_idle_t *handle);
 };

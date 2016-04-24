@@ -3,13 +3,13 @@
 uvplus_timer::uvplus_timer() {
 }
 
-int uvplus_timer::init(uvplus_loop *loop) {
+int uvplus_timer::init(uvplus_loop &loop) {
   this->uvplus_handle::init();
   auto timer = (uv_timer_t *)context_ptr();
-  return uv_timer_init(loop->context_ptr(), timer);
+  return uv_timer_init(loop.context_ptr(), timer);
 }
 
-int uvplus_timer::start(uint64_t timeout, uint64_t repeat, std::function<void()> timer_callback) {
+int uvplus_timer::start(uint64_t timeout, uint64_t repeat, std::function<void(uvplus_timer *self)> timer_callback) {
   auto timer = (uv_timer_t *)context_ptr();
   this->timer_callback = timer_callback;
   return uv_timer_start(timer, timer_cb, timeout, repeat);
@@ -39,6 +39,6 @@ void uvplus_timer::timer_cb(uv_timer_t *timer) {
   auto handle = static_cast<uvplus_handle *>(timer->data);
   auto self = static_cast<uvplus_timer *>(handle);
   if (self->timer_callback) {
-    self->timer_callback();
+    self->timer_callback(self);
   }
 }
